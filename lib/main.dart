@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/bloc_delegate.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/ui/user/list.dart';
 
 void main() {
+  BlocSupervisor.delegate = SimpleBlocDelegate();
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
