@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
+import 'package:flutter_crud_with_bloc_library/ui/user/detail.dart';
+import 'package:flutter_crud_with_bloc_library/ui/user/form.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/no_data_widget.dart';
 
@@ -28,7 +30,9 @@ class UserListScreen extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
-                  userBloc.add(UserEvent(event: UserBlocEvent.LIST, query: _searchController.text));
+                  userBloc.add(UserEvent(
+                      event: UserBlocEvent.LIST,
+                      query: _searchController.text));
                 },
               ),
               hintText: 'Search...',
@@ -36,12 +40,20 @@ class UserListScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            userBloc.add(UserEvent(event: UserBlocEvent.READ, user: User()));
-            Navigator.of(context).pushNamed('/user-form');
-          }
-        ),
+            child: Icon(Icons.add),
+            onPressed: () {
+              userBloc.add(UserEvent(event: UserBlocEvent.READ, user: User()));
+              Navigator.of(context).push(
+                MaterialPageRoute<UserFormScreen>(
+                  builder: (context) {
+                    return BlocProvider.value(
+                      value: userBloc,
+                      child: UserFormScreen(),
+                    );
+                  },
+                ),
+              );
+            }),
         body: Center(
           child: RefreshIndicator(
             key: _refreshIndicatorKey,
@@ -74,7 +86,16 @@ class UserListScreen extends StatelessWidget {
         child: GestureDetector(
       onTap: () {
         userBloc.add(UserEvent(event: UserBlocEvent.READ, user: user));
-        Navigator.of(context).pushNamed('/user');
+        Navigator.of(context).push(
+          MaterialPageRoute<UserDetailScreen>(
+            builder: (context) {
+              return BlocProvider.value(
+                value: userBloc,
+                child: UserDetailScreen(),
+              );
+            },
+          ),
+        );
       },
       child: Container(
           child: Row(
