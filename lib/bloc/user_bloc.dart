@@ -8,8 +8,9 @@ enum UserBlocEvent { LIST, CREATE, READ, UPDATE, DELETE }
 class UserEvent {
   UserBlocEvent event;
   User user;
+  String query;
   
-  UserEvent({@required this.event, this.user});
+  UserEvent({@required this.event, this.user, this.query});
 }
 
 class UserState {
@@ -33,7 +34,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     UserState userState;
     switch (event.event) {
       case UserBlocEvent.LIST:
-        userState = UserState(users: await _userRepository.getUsers());
+        userState = UserState(users: await _userRepository.getUsers(query: event.query));
         break;
       case UserBlocEvent.CREATE:
         await _userRepository.createUser(event.user);

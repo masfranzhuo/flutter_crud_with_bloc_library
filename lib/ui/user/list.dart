@@ -11,8 +11,10 @@ class UserListScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
-  
+
   UserBloc userBloc;
+
+  TextEditingController _searchController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +22,30 @@ class UserListScreen extends StatelessWidget {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text('List Users'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                userBloc.add(UserEvent(event: UserBlocEvent.READ, user: User()));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UserFormScreen()),
-                );
-              },
-            )
-          ],
+          title: TextField(
+            controller: _searchController,
+            autocorrect: false,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  userBloc.add(UserEvent(event: UserBlocEvent.LIST, query: _searchController.text));
+                },
+              ),
+              hintText: 'Search...',
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            userBloc.add(UserEvent(event: UserBlocEvent.READ, user: User()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => UserFormScreen()),
+            );
+          }
         ),
         body: Center(
           child: RefreshIndicator(
@@ -40,8 +53,7 @@ class UserListScreen extends StatelessWidget {
             onRefresh: () async {
               userBloc.add(UserEvent(event: UserBlocEvent.LIST));
             },
-            child: BlocBuilder<UserBloc, UserState>(
-              builder: (context, state) {
+            child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
               if (state is UninitializedUserState) {
                 userBloc.add(UserEvent(event: UserBlocEvent.LIST));
                 return Loading();

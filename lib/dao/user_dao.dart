@@ -8,7 +8,7 @@ class UserDao {
     final db = await dbProvider.database;
 
     List<Map<String, dynamic>> result;
-    if (query != null) {
+    if (query != null && query != '') {
       if (query.isNotEmpty) {
         result = await db.query(userTable,
             columns: columns, where: 'name LIKE ?', whereArgs: ['%$query%']);

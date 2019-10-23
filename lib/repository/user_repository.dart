@@ -4,7 +4,7 @@ import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
 class UserRepository {
   final userDao = UserDao();
 
-  Future getUsers() => userDao.getUsers();
+  Future getUsers({String query}) => userDao.getUsers(query: query);
 
   Future getUser(int id) => userDao.getUser(id: id);
 

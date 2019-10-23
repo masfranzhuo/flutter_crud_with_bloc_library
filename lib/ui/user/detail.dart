@@ -14,18 +14,15 @@ class UserDetailScreen extends StatelessWidget {
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text('User Details'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UserFormScreen()),
-                );
-              },
-            )
-          ],
         ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.edit),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => UserFormScreen()),
+              );
+            }),
         body: Center(
           child: SingleChildScrollView(
             child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
