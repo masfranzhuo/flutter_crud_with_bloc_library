@@ -1,4 +1,4 @@
-import 'package:flutter_crud_with_bloc_library/dao/user_dao.dart';
+import 'package:flutter_crud_with_bloc_library/provider/user_dao.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
 
 class UserRepository {

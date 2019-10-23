@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
-import 'package:flutter_crud_with_bloc_library/ui/user/form.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/no_data_widget.dart';
 
 class UserDetailScreen extends StatelessWidget {
@@ -18,10 +17,7 @@ class UserDetailScreen extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.edit),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => UserFormScreen()),
-              );
+              Navigator.of(context).pushNamed('/user-form');
             }),
         body: Center(
           child: SingleChildScrollView(

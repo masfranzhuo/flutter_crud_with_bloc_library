@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
-import 'package:flutter_crud_with_bloc_library/ui/user/detail.dart';
-import 'package:flutter_crud_with_bloc_library/ui/user/form.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/no_data_widget.dart';
 
@@ -41,10 +39,7 @@ class UserListScreen extends StatelessWidget {
           child: Icon(Icons.add),
           onPressed: () {
             userBloc.add(UserEvent(event: UserBlocEvent.READ, user: User()));
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => UserFormScreen()),
-            );
+            Navigator.of(context).pushNamed('/user-form');
           }
         ),
         body: Center(
@@ -79,10 +74,7 @@ class UserListScreen extends StatelessWidget {
         child: GestureDetector(
       onTap: () {
         userBloc.add(UserEvent(event: UserBlocEvent.READ, user: user));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => UserDetailScreen()),
-        );
+        Navigator.of(context).pushNamed('/user');
       },
       child: Container(
           child: Row(
