@@ -45,9 +45,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         break;
       case UserBlocEvent.UPDATE:
         await _userRepository.updateUser(event.user);
-        User user = await _userRepository.getUser(event.user.id);
-        _userState.users[getIndex(_userState.users, user)] = user;
-        userState = UserState(users: _userState.users, user: user);
+        _userState.users[getIndex(_userState.users, event.user)] = event.user;
+        userState = UserState(users: _userState.users, user: event.user);
         break;
       case UserBlocEvent.DELETE:
         await _userRepository.deleteUser(event.user.id);

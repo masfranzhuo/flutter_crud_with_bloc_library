@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/bloc_delegate.dart';
-import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/user_form/user_form_bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/user_list/bloc.dart';
 import 'package:flutter_crud_with_bloc_library/ui/user/list.dart';
 
 void main() {
@@ -21,8 +22,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       theme: ThemeData(brightness: Brightness.dark),
-      home: BlocProvider(
-          builder: (context) => UserBloc(), child: (UserListScreen())),
+      home: MultiBlocProvider(providers: [
+        BlocProvider<UserListBloc>(
+          builder: (context) => UserListBloc()..add(GetUsers()),
+        ),
+        BlocProvider<UserFormBloc>(
+          builder: (context) => UserFormBloc(),
+        ),
+      ], child: UserListScreen()),
     );
   }
 }

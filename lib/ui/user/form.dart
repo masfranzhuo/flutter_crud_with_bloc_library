@@ -1,98 +1,113 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_crud_with_bloc_library/bloc/user_bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/user_form/bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_bloc.dart';
+import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_event.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
+import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
 
 class UserFormScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
 
-  UserBloc userBloc;
+  UserListBloc userListBloc;
+  UserFormBloc userFormBloc;
 
   @override
   Widget build(BuildContext context) {
-    userBloc = BlocProvider.of<UserBloc>(context);
-    return BlocBuilder<UserBloc, UserState>(builder: (context, state) {
-      User user = state.user != null ? state.user : User();
-      _nameController.value = _nameController.value.copyWith(text: user.name);
-      _usernameController.value = _usernameController.value.copyWith(text: user.username);
-      _emailController.value = _emailController.value.copyWith(text: user.email);
-      return Scaffold(
+    userListBloc = BlocProvider.of<UserListBloc>(context);
+    userFormBloc = BlocProvider.of<UserFormBloc>(context);
+    return WillPopScope(
+      onWillPop: () async {
+        userFormBloc.add(BackEvent());
+        return true;
+      },
+      child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text((user.id == null ? 'Add' : 'Edit') + ' User'),
-        ),
+            title: BlocBuilder<UserFormBloc, UserFormState>(
+          builder: (context, state) =>
+              Text((state.user?.id == null ? 'Add' : 'Edit') + ' User'),
+        )),
         body: Form(
           key: _formKey,
           child: Center(
             child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: 'Name',
-                        ),
-                        onChanged: (value) {
-                          user.name = value;
-                        },
-                        validator: (value) {
-                          if (value.length < 1) {
-                            return 'Name cannot be empty';
-                          }
-                          return null;
-                        }),
-                    TextFormField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          labelText: 'Username',
-                        ),
-                        onChanged: (value) {
-                          user.username = value;
-                        },
-                        validator: (value) {
-                          if (value.length < 1) {
-                            return 'Username cannot be empty';
-                          }
-                          return null;
-                        }),
-                    TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                        ),
-                        onChanged: (value) {
-                          user.email = value;
-                        },
-                        validator: (value) {
-                          if (value.length < 1) {
-                            return 'Email cannot be empty';
-                          }
-                          return null;
-                        }),
-                    RaisedButton(
-                      child: Text('Submit'),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          userBloc.add(UserEvent(event: user.id == null ? UserBlocEvent.CREATE : UserBlocEvent.UPDATE, user: user));
-                          Navigator.pop(context);
-                        }
-                      },
-                    )
-                  ],
-                ),
-              ),
+              child: BlocBuilder<UserFormBloc, UserFormState>(
+                  builder: (context, state) {
+                if (state is Loaded) {
+                  User user = state.user?.id == null ? User() : state.user;
+                  print(user.toJson());
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                            ),
+                            initialValue: user?.name ?? '',
+                            onChanged: (value) {
+                              user?.name = value;
+                            },
+                            validator: (value) {
+                              if (value.length < 1) {
+                                return 'Name cannot be empty';
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Username',
+                            ),
+                            initialValue: user?.username ?? '',
+                            onChanged: (value) {
+                              user?.username = value;
+                            },
+                            validator: (value) {
+                              if (value.length < 1) {
+                                return 'Username cannot be empty';
+                              }
+                              return null;
+                            }),
+                        TextFormField(
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                            ),
+                            initialValue: user?.email ?? '',
+                            onChanged: (value) {
+                              user?.email = value;
+                            },
+                            validator: (value) {
+                              if (value.length < 1) {
+                                return 'Email cannot be empty';
+                              }
+                              return null;
+                            }),
+                        RaisedButton(
+                          child: Text('Submit'),
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              userFormBloc.add(user?.id == null
+                                  ? CreateUser(user)
+                                  : UpdateUser(user));
+                              userListBloc.add(GetUsers());
+                              Navigator.pop(context);
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                }
+                return LoadingWidget();
+              }),
             ),
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 }
