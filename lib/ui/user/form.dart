@@ -35,79 +35,85 @@ class UserFormScreen extends StatelessWidget {
           key: _formKey,
           child: Center(
             child: SingleChildScrollView(
-              child: BlocBuilder<UserFormBloc, UserFormState>(
-                  builder: (context, state) {
-                if (state is Loaded) {
-                  User user = state.user?.id == null ? User() : state.user;
-                  print(user.toJson());
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Name',
-                            ),
-                            initialValue: user?.name ?? '',
-                            onChanged: (value) {
-                              user?.name = value;
-                            },
-                            validator: (value) {
-                              if (value.length < 1) {
-                                return 'Name cannot be empty';
+              child: BlocListener<UserFormBloc, UserFormState>(
+                condition: (previousState, state) {
+                  return state is Success;
+                },
+                listener: (context, state) {
+                  userListBloc.add(GetUsers());
+                  Navigator.pop(context);
+                },
+                child: BlocBuilder<UserFormBloc, UserFormState>(
+                    builder: (context, state) {
+                  if (state is Loaded) {
+                    User user = state.user?.id == null ? User() : state.user;
+                    return Container(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        children: <Widget>[
+                          TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                              ),
+                              initialValue: user?.name ?? '',
+                              onChanged: (value) {
+                                user?.name = value;
+                              },
+                              validator: (value) {
+                                if (value.length < 1) {
+                                  return 'Name cannot be empty';
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Username',
+                              ),
+                              initialValue: user?.username ?? '',
+                              onChanged: (value) {
+                                user?.username = value;
+                              },
+                              validator: (value) {
+                                if (value.length < 1) {
+                                  return 'Username cannot be empty';
+                                }
+                                return null;
+                              }),
+                          TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                labelText: 'Email',
+                              ),
+                              initialValue: user?.email ?? '',
+                              onChanged: (value) {
+                                user?.email = value;
+                              },
+                              validator: (value) {
+                                if (value.length < 1) {
+                                  return 'Email cannot be empty';
+                                }
+                                return null;
+                              }),
+                          RaisedButton(
+                            child: Text('Submit'),
+                            onPressed: () {
+                              if (_formKey.currentState.validate()) {
+                                userFormBloc.add(user?.id == null
+                                    ? CreateUser(user)
+                                    : UpdateUser(user));
                               }
-                              return null;
-                            }),
-                        TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Username',
-                            ),
-                            initialValue: user?.username ?? '',
-                            onChanged: (value) {
-                              user?.username = value;
                             },
-                            validator: (value) {
-                              if (value.length < 1) {
-                                return 'Username cannot be empty';
-                              }
-                              return null;
-                            }),
-                        TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                            ),
-                            initialValue: user?.email ?? '',
-                            onChanged: (value) {
-                              user?.email = value;
-                            },
-                            validator: (value) {
-                              if (value.length < 1) {
-                                return 'Email cannot be empty';
-                              }
-                              return null;
-                            }),
-                        RaisedButton(
-                          child: Text('Submit'),
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              userFormBloc.add(user?.id == null
-                                  ? CreateUser(user)
-                                  : UpdateUser(user));
-                              userListBloc.add(GetUsers());
-                              Navigator.pop(context);
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  );
-                }
-                if (state is Error) {
-                  return error(state.error);
-                }
-                return LoadingWidget();
-              }),
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                  if (state is Error) {
+                    return error(state.message);
+                  }
+                  return LoadingWidget();
+                }),
+              ),
             ),
           ),
         ),

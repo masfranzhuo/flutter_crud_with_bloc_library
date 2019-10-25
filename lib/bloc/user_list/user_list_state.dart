@@ -4,9 +4,9 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class UserListState {
   final List<User> users;
-  final String error;
+  final String message;
 
-  UserListState({this.users, this.error});
+  UserListState({this.users, this.message});
 }
   
 class InitialUserListState extends UserListState {}
@@ -14,7 +14,7 @@ class InitialUserListState extends UserListState {}
 class Loading extends UserListState {}
 
 class Error extends UserListState {
-  Error({String error}) : super(error: error);
+  Error({String errorMessage}) : super(message: errorMessage);
 }
 
 class Loaded extends UserListState {

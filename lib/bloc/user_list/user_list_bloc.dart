@@ -18,14 +18,14 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
         List<User> users = await _userRepository.getUsers(query: event.query);
         yield Loaded(users: users);
       } catch(e) {
-        yield Error(error: e.toString());
+        yield Error(errorMessage: e.toString());
       }
     } else if (event is DeleteUser) {
       try {
         await _userRepository.deleteUser(event.user.id);
         yield Loaded(users: await _userRepository.getUsers(query: event.query));
       } catch(e) {
-        yield Error(error: e.toString());
+        yield Error(errorMessage: e.toString());
       }
     }
   }

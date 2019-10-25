@@ -18,23 +18,23 @@ class UserFormBloc extends Bloc<UserFormEvent, UserFormState> {
         User user = await _userRepository.getUser(event.user?.id);
         yield Loaded(user: event.user == null ? User() : user);
       } catch(e) {
-        yield Error(error: e.toString());
+        yield Error(errorMessage: e.toString());
       }
     } else if (event is BackEvent) {
       yield InitialUserFormState();
     } else if (event is CreateUser) {
       try {
         await _userRepository.createUser(event.user);
-        yield InitialUserFormState();
+        yield Success(successMessage: event.user.name + ' created');
       } catch(e) {
-        yield Error(error: e.toString());
+        yield Error(errorMessage: e.toString());
       }
     } else if (event is UpdateUser) {
       try {
         await _userRepository.updateUser(event.user);
-        yield InitialUserFormState();
+        yield Success(successMessage: event.user.name + ' updated');        
       } catch(e) {
-        yield Error(error: e.toString());
+        yield Error(errorMessage: e.toString());
       }
     }
   }

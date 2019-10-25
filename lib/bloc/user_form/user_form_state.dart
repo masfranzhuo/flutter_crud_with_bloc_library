@@ -4,9 +4,9 @@ import 'package:meta/meta.dart';
 @immutable
 abstract class UserFormState {
   final User user;
-  final String error;
+  final String message;
 
-  UserFormState({this.user, this.error});
+  UserFormState({this.user, this.message});
 }
   
 class InitialUserFormState extends UserFormState {}
@@ -14,9 +14,13 @@ class InitialUserFormState extends UserFormState {}
 class Loading extends UserFormState {}
 
 class Error extends UserFormState {
-  Error({String error}) : super(error: error);
+  Error({String errorMessage}) : super(message: errorMessage);
 }
 
 class Loaded extends UserFormState {
   Loaded({User user}) : super(user: user);
+}
+
+class Success extends UserFormState {
+  Success({String successMessage}) : super(message: successMessage);
 }
