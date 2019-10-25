@@ -15,9 +15,9 @@ class GetUser extends UserFormEvent {
 }
 
 class CreateUser extends UserFormEvent {
-  CreateUser(User user) : super(user: user);
+  CreateUser({@required User user}) : super(user: user);
 }
 
 class UpdateUser extends UserFormEvent {
-  UpdateUser(User user) : super(user: user);
+  UpdateUser({@required User user}) : super(user: user);
 }

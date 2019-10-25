@@ -14,9 +14,9 @@ class InitialUserListState extends UserListState {}
 class Loading extends UserListState {}
 
 class Error extends UserListState {
-  Error({String errorMessage}) : super(message: errorMessage);
+  Error({@required String errorMessage}) : super(message: errorMessage);
 }
 
 class Loaded extends UserListState {
-  Loaded({List<User> users}) : super(users: users);
+  Loaded({@required List<User> users}) : super(users: users);
 }

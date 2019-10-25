@@ -14,13 +14,13 @@ class InitialUserFormState extends UserFormState {}
 class Loading extends UserFormState {}
 
 class Error extends UserFormState {
-  Error({String errorMessage}) : super(message: errorMessage);
+  Error({@required String errorMessage}) : super(message: errorMessage);
 }
 
 class Loaded extends UserFormState {
-  Loaded({User user}) : super(user: user);
+  Loaded({@required User user}) : super(user: user);
 }
 
 class Success extends UserFormState {
-  Success({String successMessage}) : super(message: successMessage);
+  Success({@required String successMessage}) : super(message: successMessage);
 }

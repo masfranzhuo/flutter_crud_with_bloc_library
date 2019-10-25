@@ -14,5 +14,5 @@ class GetUsers extends UserListEvent {
 }
 
 class DeleteUser extends UserListEvent {
-  DeleteUser(User user) : super(user: user);
+  DeleteUser({@required User user}) : super(user: user);
 }

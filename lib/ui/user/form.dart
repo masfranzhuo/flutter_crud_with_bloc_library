@@ -99,8 +99,8 @@ class UserFormScreen extends StatelessWidget {
                             onPressed: () {
                               if (_formKey.currentState.validate()) {
                                 userFormBloc.add(user?.id == null
-                                    ? CreateUser(user)
-                                    : UpdateUser(user));
+                                    ? CreateUser(user: user)
+                                    : UpdateUser(user: user));
                               }
                             },
                           )

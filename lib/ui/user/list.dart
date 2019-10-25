@@ -134,7 +134,7 @@ class UserListScreen extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.delete),
                 onPressed: () {
-                  userListBloc.add(DeleteUser(user));
+                  userListBloc.add(DeleteUser(user: user));
                   _scaffoldKey.currentState
                       .showSnackBar(snackBar(user.name + ' deleted'));
                 },
