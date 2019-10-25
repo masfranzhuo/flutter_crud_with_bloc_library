@@ -5,6 +5,7 @@ import 'package:flutter_crud_with_bloc_library/bloc/user_form/user_form_event.da
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/bloc.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
 import 'package:flutter_crud_with_bloc_library/ui/user/form.dart';
+import 'package:flutter_crud_with_bloc_library/widgets/error_widget.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/no_data_widget.dart';
 
@@ -77,6 +78,9 @@ class UserListScreen extends StatelessWidget {
                             },
                           )
                         : NoData()));
+              }
+              if (state is Error) {
+                return error(state.error);
               }
               return LoadingWidget();
             }),

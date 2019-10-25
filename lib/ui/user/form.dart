@@ -4,6 +4,7 @@ import 'package:flutter_crud_with_bloc_library/bloc/user_form/bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_event.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
+import 'package:flutter_crud_with_bloc_library/widgets/error_widget.dart';
 import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
 
 class UserFormScreen extends StatelessWidget {
@@ -101,6 +102,9 @@ class UserFormScreen extends StatelessWidget {
                       ],
                     ),
                   );
+                }
+                if (state is Error) {
+                  return error(state.error);
                 }
                 return LoadingWidget();
               }),

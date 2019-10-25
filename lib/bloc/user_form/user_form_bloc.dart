@@ -14,15 +14,28 @@ class UserFormBloc extends Bloc<UserFormEvent, UserFormState> {
   Stream<UserFormState> mapEventToState(UserFormEvent event) async* {
     yield Loading();
     if (event is GetUser) {
-      yield Loaded(user: event.user == null ? User() : await _userRepository.getUser(event.user.id));
+      try {
+        User user = await _userRepository.getUser(event.user?.id);
+        yield Loaded(user: event.user == null ? User() : user);
+      } catch(e) {
+        yield Error(error: e.toString());
+      }
     } else if (event is BackEvent) {
       yield InitialUserFormState();
     } else if (event is CreateUser) {
-      await _userRepository.createUser(event.user);
-      yield InitialUserFormState();
+      try {
+        await _userRepository.createUser(event.user);
+        yield InitialUserFormState();
+      } catch(e) {
+        yield Error(error: e.toString());
+      }
     } else if (event is UpdateUser) {
-      await _userRepository.updateUser(event.user);
-      yield InitialUserFormState();
+      try {
+        await _userRepository.updateUser(event.user);
+        yield InitialUserFormState();
+      } catch(e) {
+        yield Error(error: e.toString());
+      }
     }
   }
 }
