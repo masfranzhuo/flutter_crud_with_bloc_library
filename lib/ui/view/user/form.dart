@@ -4,8 +4,8 @@ import 'package:flutter_crud_with_bloc_library/bloc/user_form/bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/user_list_event.dart';
 import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
-import 'package:flutter_crud_with_bloc_library/widgets/error_widget.dart';
-import 'package:flutter_crud_with_bloc_library/widgets/loading_widget.dart';
+import 'package:flutter_crud_with_bloc_library/ui/shared/error_widget.dart';
+import 'package:flutter_crud_with_bloc_library/ui/shared/loading_widget.dart';
 
 class UserFormScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -111,7 +111,7 @@ class UserFormScreen extends StatelessWidget {
                   if (state is Error) {
                     return error(state.message);
                   }
-                  return LoadingWidget();
+                  return loading();
                 }),
               ),
             ),

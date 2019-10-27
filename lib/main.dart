@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/bloc_delegate.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_form/user_form_bloc.dart';
 import 'package:flutter_crud_with_bloc_library/bloc/user_list/bloc.dart';
-import 'package:flutter_crud_with_bloc_library/ui/user/list.dart';
+import 'package:flutter_crud_with_bloc_library/ui/view/user/list.dart';
 
 void main() {
   BlocSupervisor.delegate = SimpleBlocDelegate();
