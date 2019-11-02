@@ -15,8 +15,7 @@ class UserFormBloc extends Bloc<UserFormEvent, UserFormState> {
     yield Loading();
     if (event is GetUser) {
       try {
-        User user = await _userRepository.getUser(event.user?.id);
-        yield Loaded(user: event.user == null ? User() : user);
+        yield Loaded(user: event.user?.id == null ? User() : await _userRepository.getUser(event.user?.id));
       } catch(e) {
         yield Error(errorMessage: e.toString());
       }

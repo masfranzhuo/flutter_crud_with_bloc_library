@@ -7,12 +7,18 @@ import 'package:flutter_crud_with_bloc_library/model/user_model.dart';
 import 'package:flutter_crud_with_bloc_library/ui/shared/error_widget.dart';
 import 'package:flutter_crud_with_bloc_library/ui/shared/loading_widget.dart';
 
-class UserFormScreen extends StatelessWidget {
+class UserFormScreen extends StatefulWidget {
+  @override
+  _UserFormScreenState createState() => _UserFormScreenState();
+}
+
+class _UserFormScreenState extends State<UserFormScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final _formKey = GlobalKey<FormState>();
 
   UserListBloc userListBloc;
+
   UserFormBloc userFormBloc;
 
   @override
@@ -52,6 +58,7 @@ class UserFormScreen extends StatelessWidget {
                       child: Column(
                         children: <Widget>[
                           TextFormField(
+                              keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                 labelText: 'Name',
                               ),
@@ -66,6 +73,8 @@ class UserFormScreen extends StatelessWidget {
                                 return null;
                               }),
                           TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+
                               decoration: InputDecoration(
                                 labelText: 'Username',
                               ),
