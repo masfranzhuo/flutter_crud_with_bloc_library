@@ -42,7 +42,7 @@ class _UserFormScreenState extends State<UserFormScreen> {
           child: Center(
             child: SingleChildScrollView(
               child: BlocListener<UserFormBloc, UserFormState>(
-                condition: (previousState, state) {
+                listenWhen: (previousState, state) {
                   return state is Success;
                 },
                 listener: (context, state) {
@@ -74,7 +74,6 @@ class _UserFormScreenState extends State<UserFormScreen> {
                               }),
                           TextFormField(
                               keyboardType: TextInputType.emailAddress,
-
                               decoration: InputDecoration(
                                 labelText: 'Username',
                               ),

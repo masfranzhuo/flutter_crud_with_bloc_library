@@ -68,13 +68,13 @@ class UserListScreen extends StatelessWidget {
             },
             child: BlocListener<_UserFormBloc.UserFormBloc,
                 _UserFormBloc.UserFormState>(
-              condition: (previousState, state) {
+              listenWhen: (previousState, state) {
                 return state is _UserFormBloc.Success;
               },
               listener: (context, state) {
-                  if (state.message.isNotEmpty) {
-                    _scaffoldKey.currentState
-                        .showSnackBar(snackBar(state.message));
+                if (state.message.isNotEmpty) {
+                  _scaffoldKey.currentState
+                      .showSnackBar(snackBar(state.message));
                 }
               },
               child: BlocBuilder<UserListBloc, UserListState>(

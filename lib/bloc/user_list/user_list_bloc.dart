@@ -6,9 +6,8 @@ import './bloc.dart';
 
 class UserListBloc extends Bloc<UserListEvent, UserListState> {
   final _userRepository = UserRepository();
-  
-  @override
-  UserListState get initialState => InitialUserListState();
+
+  UserListBloc() : super(InitialUserListState());
 
   @override
   Stream<UserListState> mapEventToState(UserListEvent event) async* {
@@ -17,14 +16,14 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
       try {
         List<User> users = await _userRepository.getUsers(query: event.query);
         yield Loaded(users: users);
-      } catch(e) {
+      } catch (e) {
         yield Error(errorMessage: e.toString());
       }
     } else if (event is DeleteUser) {
       try {
         await _userRepository.deleteUser(event.user.id);
         yield Loaded(users: await _userRepository.getUsers(query: event.query));
-      } catch(e) {
+      } catch (e) {
         yield Error(errorMessage: e.toString());
       }
     }
