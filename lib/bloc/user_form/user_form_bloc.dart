@@ -6,17 +6,19 @@ import './bloc.dart';
 
 class UserFormBloc extends Bloc<UserFormEvent, UserFormState> {
   final _userRepository = UserRepository();
-  
-  @override
-  UserFormState get initialState => InitialUserFormState();
+
+  UserFormBloc() : super(InitialUserFormState());
 
   @override
   Stream<UserFormState> mapEventToState(UserFormEvent event) async* {
     yield Loading();
     if (event is GetUser) {
       try {
-        yield Loaded(user: event.user?.id == null ? User() : await _userRepository.getUser(event.user?.id));
-      } catch(e) {
+        yield Loaded(
+            user: event.user?.id == null
+                ? User()
+                : await _userRepository.getUser(event.user?.id));
+      } catch (e) {
         yield Error(errorMessage: e.toString());
       }
     } else if (event is BackEvent) {
@@ -25,14 +27,14 @@ class UserFormBloc extends Bloc<UserFormEvent, UserFormState> {
       try {
         await _userRepository.createUser(event.user);
         yield Success(successMessage: event.user.name + ' created');
-      } catch(e) {
+      } catch (e) {
         yield Error(errorMessage: e.toString());
       }
     } else if (event is UpdateUser) {
       try {
         await _userRepository.updateUser(event.user);
-        yield Success(successMessage: event.user.name + ' updated');        
-      } catch(e) {
+        yield Success(successMessage: event.user.name + ' updated');
+      } catch (e) {
         yield Error(errorMessage: e.toString());
       }
     }
