@@ -8,7 +8,8 @@ import 'package:flutter_crud_with_bloc_library/bloc/user_list/bloc.dart';
 import 'package:flutter_crud_with_bloc_library/ui/view/user/list.dart';
 
 void main() {
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = SimpleBlocObserver();
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -24,10 +25,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(brightness: Brightness.dark),
       home: MultiBlocProvider(providers: [
         BlocProvider<UserListBloc>(
-          builder: (context) => UserListBloc()..add(GetUsers()),
+          create: (context) => UserListBloc()..add(GetUsers()),
         ),
         BlocProvider<UserFormBloc>(
-          builder: (context) => UserFormBloc(),
+          create: (context) => UserFormBloc(),
         ),
       ], child: UserListScreen()),
     );
